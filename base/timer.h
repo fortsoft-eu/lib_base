@@ -67,6 +67,7 @@ private:
 	};
 	void start(crl::time timeout, Qt::TimerType type, Repeat repeat);
 	void adjust();
+	void connectAdjuster();
 
 	void setTimeout(crl::time timeout);
 	int timeout() const;

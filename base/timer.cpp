@@ -32,7 +32,10 @@ void CheckLocalTime() {
 Timer::Timer(
 	not_null<QThread*> thread,
 	Fn<void()> callback)
-: Timer(std::move(callback)) {
+: QObject(nullptr)
+, _callback(std::move(callback))
+, _type(Qt::PreciseTimer) {
+	setRepeat(Repeat::Interval);
 	moveToThread(thread);
 }
 
@@ -41,6 +44,10 @@ Timer::Timer(Fn<void()> callback)
 , _callback(std::move(callback))
 , _type(Qt::PreciseTimer) {
 	setRepeat(Repeat::Interval);
+	connectAdjuster();
+}
+
+void Timer::connectAdjuster() {
 	connect(
 		TimersAdjuster(),
 		&QObject::destroyed,
